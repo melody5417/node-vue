@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>创建分类</h1>
+        <h1>{{ id ? '编辑' : '新建'}}分类</h1>
         <el-form>
             <!--     原生表单阻止默认提交跳转页面       -->
             <el-form-item label="名称" label-width="120px" @submit.native.prevent="save">
@@ -16,6 +16,9 @@
 <script>
   export default {
     name: "CategoryEdit",
+    props: {
+      id: {}    // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
+    },
     data () {
       return {
         model: {}
@@ -24,14 +27,26 @@
     methods: {
       async save () {
         console.log('save')
-        const res = await this.$http.post('categories', this.model)
+        let res
+        if (this.id) {
+          res = await this.$http.put('categories/' + this.id, this.model)
+        } else {
+          res = await this.$http.post('categories', this.model)
+        }
         console.log(res)
         this.$router.push('/categories/list')
         this.$message({
           type: 'success',
           message: '保存成功'
         })
+      },
+      async fetch () {
+        const res = await this.$http.get('categories/' + this.id)
+        this.model = res.data
       }
+    },
+    created() {
+      this.id && this.fetch()
     }
   }
 </script>
