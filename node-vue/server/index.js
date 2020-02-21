@@ -6,7 +6,9 @@ app.use(require('cors')())
 app.use(express.json())
 
 // 路由
-require('./routes/admin')(app) // app传参
+require('./routes/admin/category')(app) // app传参 针对category 和模型耦合
+require('./routes/admin/index')(app) // app传参 通用CRUD接口
+
 
 // 连接数据库
 require('./plugins/db')(app)
