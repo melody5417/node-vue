@@ -5,10 +5,13 @@ const app = express()
 app.use(require('cors')())
 app.use(express.json())
 
+// 静态托管 让我们uploads里的文件可以通过/uploads访问
+app.use('/uploads', express.static(__dirname + '/uploads'))
+
 // 路由
 require('./routes/admin/category')(app) // app传参 针对category 和模型耦合
 require('./routes/admin/index')(app) // app传参 通用CRUD接口
-
+require('./routes/admin/upload')(app) // app传参 upload接口
 
 // 连接数据库
 require('./plugins/db')(app)
