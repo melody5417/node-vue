@@ -5,6 +5,8 @@ import CategoryEdit from "../views/CategoryEdit"
 import CategoryList from "../views/CategoryList"
 import ItemEdit from "../views/ItemEdit"
 import ItemList from "../views/ItemList"
+import HeroEdit from "../views/HeroEdit"
+import HeroList from "../views/HeroList"
 
 Vue.use(VueRouter)
 
@@ -40,6 +42,16 @@ const routes = [
         path: '/items/list',
         name: 'ItemList',
         component: ItemList
+      }, {
+        path: '/heros/create',
+        component: HeroEdit
+      }, {
+        path: '/heros/edit/:id',
+        component: HeroEdit,
+        props: true     // 两个页面对应一个组件 加上props：true，表示把所有参数都注入到这个页面
+      }, {
+        path: '/heros/list',
+        component: HeroList
       }
     ]
   },
