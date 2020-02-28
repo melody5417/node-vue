@@ -6,6 +6,31 @@
             <el-form-item label="名称">
                 <el-input v-model="model.name"></el-input>
             </el-form-item>
+            <el-form-item label="称号">
+                <el-input v-model="model.title"></el-input>
+            </el-form-item>
+            <el-form-item label="分类">
+                <el-select v-model="model.categories" placeholder="请选择" multiple>
+                    <el-option
+                            v-for="item in categories"
+                            :key="item._id"
+                            :label="item.name"
+                            :value="item._id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="难度">
+                <el-rate style="margin-top: 0.6rem" :max="9" v-model="model.scores.difficult"></el-rate>
+            </el-form-item>
+            <el-form-item label="技能">
+                <el-rate style="margin-top: 0.6rem" :max="9" v-model="model.scores.skills"></el-rate>
+            </el-form-item>
+            <el-form-item label="攻击">
+                <el-rate style="margin-top: 0.6rem" :max="9" v-model="model.scores.attack"></el-rate>
+            </el-form-item>
+            <el-form-item label="生存">
+                <el-rate style="margin-top: 0.6rem" :max="9" v-model="model.scores.survive"></el-rate>
+            </el-form-item>
             <el-form-item label="头像">
                 <!--$http.defaults 表示 http 的默认参数-->
                 <el-upload
@@ -36,13 +61,20 @@
         model: {
           // 如果不想用 this.$set 来触发数据监听，就提前把属性加上
           name: '',
-          avatar: ''
-        }
+          avatar: '',
+          scores: {
+            difficult: 0,
+            skills: 0,
+            attack:0,
+            survive: 0
+          }
+        },
+        categories: []
       }
     },
     methods: {
       async save () {
-        console.log('save')
+        console.log('save', this.mode)
         let res
         if (this.id) {
           res = await this.$http.put('/rest/heros/' + this.id, this.model)
@@ -58,7 +90,9 @@
       },
       async fetch () {
         const res = await this.$http.get('/rest/heros/' + this.id)
-        this.model = res.data
+        console.log('fetch', res)
+        // this.model = res.data // 这种赋值方式 遇到空的属性渲染时会报错
+        this.mode = Object.assign(this.model, res.data) // 采用合并的方式赋值，若属性为null 不会赋值 影响到现有属性数据
       },
       handleAvatarSuccess(res, file) {
         console.log('res: ', res)
@@ -82,9 +116,14 @@
           this.$message.error('上传头像图片大小不能超过 2MB!');
         }
         return isJPG && isLt2M;
+      },
+      async fetchCategories () {
+        const res = await this.$http.get('/rest/categories')
+        this.categories = res.data
       }
     },
     created() {
+      this.fetchCategories()
       this.id && this.fetch()
     }
   }
