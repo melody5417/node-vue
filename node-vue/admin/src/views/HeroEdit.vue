@@ -31,6 +31,35 @@
             <el-form-item label="生存">
                 <el-rate style="margin-top: 0.6rem" :max="9" v-model="model.scores.survive"></el-rate>
             </el-form-item>
+            <el-form-item label="顺风出装">
+                <el-select v-model="model.items1" placeholder="请选择" multiple>
+                    <el-option
+                            v-for="item in items"
+                            :key="item._id"
+                            :label="item.name"
+                            :value="item._id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="逆风出装">
+                <el-select v-model="model.items2" placeholder="请选择" multiple>
+                    <el-option
+                            v-for="item in items"
+                            :key="item._id"
+                            :label="item.name"
+                            :value="item._id">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="使用技巧">
+                <el-input v-model="model.usageTips"></el-input>
+            </el-form-item>
+            <el-form-item label="对抗技巧">
+                <el-input v-model="model.battleTips"></el-input>
+            </el-form-item>
+            <el-form-item label="团战思路">
+                <el-input v-model="model.teamTips"></el-input>
+            </el-form-item>
             <el-form-item label="头像">
                 <!--$http.defaults 表示 http 的默认参数-->
                 <el-upload
@@ -69,7 +98,8 @@
             survive: 0
           }
         },
-        categories: []
+        categories: [],
+        items: [],
       }
     },
     methods: {
@@ -120,10 +150,15 @@
       async fetchCategories () {
         const res = await this.$http.get('/rest/categories')
         this.categories = res.data
+      },
+      async fetchItems () {
+        const res = await this.$http.get('/rest/items')
+        this.items = res.data
       }
     },
     created() {
       this.fetchCategories()
+      this.fetchItems()
       this.id && this.fetch()
     }
   }
