@@ -7,7 +7,7 @@
                 <el-input v-model="model.username"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-                <vue-editor v-model="model.password" />
+                <el-input type="password" v-model="model.password"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" native-type="submit">保存</el-button>
