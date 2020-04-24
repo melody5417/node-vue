@@ -24,47 +24,47 @@
 </template>
 
 <script>
-  export default {
-    name: "CategoryEdit",
-    props: {
-      id: {}    // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
-    },
-    data () {
-      return {
-        model: {},
-        parents: []
-      }
-    },
-    methods: {
-      async save () {
-        console.log('save')
-        let res
-        if (this.id) {
-          res = await this.$http.put('/rest/categories/' + this.id, this.model)
-        } else {
-          res = await this.$http.post('/rest/categories', this.model)
-        }
-        console.log(res)
-        this.$router.push('/categories/list')
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        })
-      },
-      async fetch () {
-        const res = await this.$http.get('/rest/categories/' + this.id)
-        this.model = res.data
-      },
-      async fetchParents () {
-        const res = await this.$http.get('/rest/categories/')
-        this.parents = res.data
-      }
-    },
-    created() {
-      this.fetchParents()
-      this.id && this.fetch()
+export default {
+  name: 'CategoryEdit',
+  props: {
+    id: {} // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
+  },
+  data () {
+    return {
+      model: {},
+      parents: []
     }
+  },
+  methods: {
+    async save () {
+      console.log('save')
+      let res
+      if (this.id) {
+        res = await this.$http.put('/rest/categories/' + this.id, this.model)
+      } else {
+        res = await this.$http.post('/rest/categories', this.model)
+      }
+      console.log(res)
+      this.$router.push('/categories/list')
+      this.$message({
+        type: 'success',
+        message: '保存成功'
+      })
+    },
+    async fetch () {
+      const res = await this.$http.get('/rest/categories/' + this.id)
+      this.model = res.data
+    },
+    async fetchParents () {
+      const res = await this.$http.get('/rest/categories/')
+      this.parents = res.data
+    }
+  },
+  created () {
+    this.fetchParents()
+    this.id && this.fetch()
   }
+}
 </script>
 
 <style scoped>

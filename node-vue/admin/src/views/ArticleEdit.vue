@@ -27,53 +27,53 @@
 </template>
 
 <script>
-  import { VueEditor } from "vue2-editor"
+import { VueEditor } from 'vue2-editor'
 
-  export default {
-    name: "ArticleEdit",
-    components: {
-      VueEditor
-    },
-    props: {
-      id: {}    // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
-    },
-    data () {
-      return {
-        model: {},
-        categories: []
-      }
-    },
-    methods: {
-      async save () {
-        console.log('save', this.model)
-        let res
-        if (this.id) {
-          res = await this.$http.put('/rest/articles/' + this.id, this.model)
-        } else {
-          res = await this.$http.post('/rest/articles', this.model)
-        }
-        console.log(res)
-        this.$router.push('/articles/list')
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        })
-      },
-      async fetch () {
-        const res = await this.$http.get('/rest/articles/' + this.id)
-        console.log('fetch: ', res.data)
-        this.model = res.data
-      },
-      async fetchCatigories () {
-        const res = await this.$http.get('/rest/categories/')
-        this.categories = res.data
-      }
-    },
-    created() {
-      this.fetchCatigories()
-      this.id && this.fetch()
+export default {
+  name: 'ArticleEdit',
+  components: {
+    VueEditor
+  },
+  props: {
+    id: {} // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
+  },
+  data () {
+    return {
+      model: {},
+      categories: []
     }
+  },
+  methods: {
+    async save () {
+      console.log('save', this.model)
+      let res
+      if (this.id) {
+        res = await this.$http.put('/rest/articles/' + this.id, this.model)
+      } else {
+        res = await this.$http.post('/rest/articles', this.model)
+      }
+      console.log(res)
+      this.$router.push('/articles/list')
+      this.$message({
+        type: 'success',
+        message: '保存成功'
+      })
+    },
+    async fetch () {
+      const res = await this.$http.get('/rest/articles/' + this.id)
+      console.log('fetch: ', res.data)
+      this.model = res.data
+    },
+    async fetchCatigories () {
+      const res = await this.$http.get('/rest/categories/')
+      this.categories = res.data
+    }
+  },
+  created () {
+    this.fetchCatigories()
+    this.id && this.fetch()
   }
+}
 </script>
 
 <style scoped>

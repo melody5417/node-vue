@@ -47,58 +47,58 @@
 </template>
 
 <script>
-  export default {
-    name: "AdEdit",
-    props: {
-      id: {}    // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
-    },
-    data () {
-      return {
-        model: {
-          items: []
-        }
+export default {
+  name: 'AdEdit',
+  props: {
+    id: {} // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
+  },
+  data () {
+    return {
+      model: {
+        items: []
       }
-    },
-    methods: {
-      async save () {
-        console.log('save', this.model)
-        let res
-        if (this.id) {
-          res = await this.$http.put('/rest/ads/' + this.id, this.model)
-        } else {
-          res = await this.$http.post('/rest/ads', this.model)
-        }
-        console.log(res)
-        this.$router.push('/ads/list')
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        })
-      },
-      async fetch () {
-        const res = await this.$http.get('/rest/ads/' + this.id)
-        console.log('fetch: ', res.data)
-        // 赋值注意 次序很重要
-        this.model = Object.assign({}, this.model, res.data)
-      },
-      beforeAvatarUpload(file) {
-        console.log('file: ', file)
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
-
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
-    },
-    created() {
-      this.id && this.fetch()
     }
+  },
+  methods: {
+    async save () {
+      console.log('save', this.model)
+      let res
+      if (this.id) {
+        res = await this.$http.put('/rest/ads/' + this.id, this.model)
+      } else {
+        res = await this.$http.post('/rest/ads', this.model)
+      }
+      console.log(res)
+      this.$router.push('/ads/list')
+      this.$message({
+        type: 'success',
+        message: '保存成功'
+      })
+    },
+    async fetch () {
+      const res = await this.$http.get('/rest/ads/' + this.id)
+      console.log('fetch: ', res.data)
+      // 赋值注意 次序很重要
+      this.model = Object.assign({}, this.model, res.data)
+    },
+    beforeAvatarUpload (file) {
+      console.log('file: ', file)
+      const isJPG = file.type === 'image/jpeg'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
+    }
+  },
+  created () {
+    this.id && this.fetch()
   }
+}
 </script>
 
 <style scoped>

@@ -27,41 +27,41 @@
 </template>
 
 <script>
-  export default {
-    name: "HeroList",
-    data () {
-      return {
-        items: []
-      }
-    },
-    methods: {
-      async fetch () {
-        const res = await this.$http.get('/rest/heros')
-        this.items = res.data
-      },
-      async remove (row) {
-        // 注意此处是单反引号
-        this.$confirm(`是否确定删除英雄 ${row.name}`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then( async () => {
-          const res = await this.$http.delete(`/rest/heros/${row._id}`)
-          console.log(res)
-          if (res.data.success) {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-          }
-          this.fetch()
-        })
-      }
-    },
-    created() {
-      this.fetch()
+export default {
+  name: 'HeroList',
+  data () {
+    return {
+      items: []
     }
+  },
+  methods: {
+    async fetch () {
+      const res = await this.$http.get('/rest/heros')
+      this.items = res.data
+    },
+    async remove (row) {
+      // 注意此处是单反引号
+      this.$confirm(`是否确定删除英雄 ${row.name}`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const res = await this.$http.delete(`/rest/heros/${row._id}`)
+        console.log(res)
+        if (res.data.success) {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }
+        this.fetch()
+      })
+    }
+  },
+  created () {
+    this.fetch()
   }
+}
 </script>
 
 <style scoped>

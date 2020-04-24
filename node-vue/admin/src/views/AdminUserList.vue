@@ -20,41 +20,41 @@
 </template>
 
 <script>
-  export default {
-    name: "AdminUserList",
-    data () {
-      return {
-        items: []
-      }
-    },
-    methods: {
-      async fetch () {
-        const res = await this.$http.get('/rest/admin_users')
-        this.items = res.data
-      },
-      async remove (row) {
-        // 注意此处是单反引号
-        this.$confirm(`是否确定删除用户 ${row.username}`, '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then( async () => {
-          const res = await this.$http.delete(`/rest/admin_users/${row._id}`)
-          console.log(res)
-          if (res.data.success) {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            });
-          }
-          this.fetch()
-        })
-      }
-    },
-    created() {
-      this.fetch()
+export default {
+  name: 'AdminUserList',
+  data () {
+    return {
+      items: []
     }
+  },
+  methods: {
+    async fetch () {
+      const res = await this.$http.get('/rest/admin_users')
+      this.items = res.data
+    },
+    async remove (row) {
+      // 注意此处是单反引号
+      this.$confirm(`是否确定删除用户 ${row.username}`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        const res = await this.$http.delete(`/rest/admin_users/${row._id}`)
+        console.log(res)
+        if (res.data.success) {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        }
+        this.fetch()
+      })
+    }
+  },
+  created () {
+    this.fetch()
   }
+}
 </script>
 
 <style scoped>

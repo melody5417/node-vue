@@ -17,42 +17,42 @@
 </template>
 
 <script>
-  export default {
-    name: "AdminUserEdit",
-    props: {
-      id: {}    // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
-    },
-    data () {
-      return {
-        model: {}
-      }
-    },
-    methods: {
-      async save () {
-        console.log('save', this.model)
-        let res
-        if (this.id) {
-          res = await this.$http.put('/rest/admin_users/' + this.id, this.model)
-        } else {
-          res = await this.$http.post('/rest/admin_users', this.model)
-        }
-        console.log(res)
-        this.$router.push('/admin_users/list')
-        this.$message({
-          type: 'success',
-          message: '保存成功'
-        })
-      },
-      async fetch () {
-        const res = await this.$http.get('/rest/admin_users/' + this.id)
-        console.log('fetch: ', res.data)
-        this.model = res.data
-      }
-    },
-    created() {
-      this.id && this.fetch()
+export default {
+  name: 'AdminUserEdit',
+  props: {
+    id: {} // 这样写尽可能的和路由解耦合 相比 this.$route.params.id
+  },
+  data () {
+    return {
+      model: {}
     }
+  },
+  methods: {
+    async save () {
+      console.log('save', this.model)
+      let res
+      if (this.id) {
+        res = await this.$http.put('/rest/admin_users/' + this.id, this.model)
+      } else {
+        res = await this.$http.post('/rest/admin_users', this.model)
+      }
+      console.log(res)
+      this.$router.push('/admin_users/list')
+      this.$message({
+        type: 'success',
+        message: '保存成功'
+      })
+    },
+    async fetch () {
+      const res = await this.$http.get('/rest/admin_users/' + this.id)
+      console.log('fetch: ', res.data)
+      this.model = res.data
+    }
+  },
+  created () {
+    this.id && this.fetch()
   }
+}
 </script>
 
 <style scoped>

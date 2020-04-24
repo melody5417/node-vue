@@ -17,19 +17,19 @@
 </template>
 
 <script>
-  export default {
-    name: "Login",
-    data () {
-      return {
-        model: {}
-      }
-    },
-    methods: {
-      login () {
-        console.log(this.model)
-      }
+export default {
+  name: 'Login',
+  data () {
+    return {
+      model: {}
+    }
+  },
+  methods: {
+    login () {
+      console.log(this.model)
     }
   }
+}
 </script>
 
 <style  lang="stylus"  scoped>

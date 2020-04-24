@@ -8,5 +8,7 @@
     "vetur.validation.template": false,
     "eslint.options": {
         "configFile": ".eslintrc.js"
-    }
+    },
+
+    
 }
