@@ -1,5 +1,6 @@
 module.exports = app => {
 	const jwt = require('jsonwebtoken')
+	const assert = require('http-assert')
 	const express = require( "express" );
 	const router = express.Router(
 		{
@@ -19,14 +20,18 @@ module.exports = app => {
 		// || 空字符串 是一种保护措施
 		// 注意authorization小写 前端都大写 后端都小写
 		const token = String(req.headers.authorization || '').split(' ').pop()
-		console.log('token: ', token)
+		assert(token, 401, '请先登录')
+
 		// id<->token
 		const { id } = jwt.verify(token, app.get('secret'))
+		assert(id, 401, '请先登录')
+
 		// const user = require(user).findById(id)
 		// 此处将user挂在到req上去 之后才可以继续访问
 		const AdminUser = require('../../models/AdminUser')
 		req.user = await AdminUser.findById(id)
-		console.log('user:', req.user)
+		assert(req.user, 401, '请先登录')
+
 		await next()
 	} , async ( req, res ) => {
 		const queryOptions = {};
@@ -56,7 +61,7 @@ module.exports = app => {
 		await req.Model.findByIdAndDelete( req.params.id, req.body );
 		res.send( {
 			success: true
-		} );
+		})
 	} );
 
 	// 中间件
@@ -69,4 +74,17 @@ module.exports = app => {
 	// 根据resource获取模型方法 1。视频里方法转换 2。读取model路径下文件 3.正则改
 	// 给通用接口最好加一个前缀 避免以后和特殊的接口冲突
 	// npm i inflection 处理单复数转换
+
+	// 错误处理函数
+	app.use(async (err, req, res, next) => {
+		if (err.statusCode) {
+			res.status(err.statusCode).send({
+				message: err.message
+			})	
+		} else {
+			res.status(500).send({
+				message: err.message
+			})
+		}
+	})
 };

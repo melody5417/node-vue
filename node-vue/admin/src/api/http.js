@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
+import router from '../router/router'
 
 const http = axios.create({
   baseURL: 'http://localhost:3000/admin/api'
@@ -7,7 +8,9 @@ const http = axios.create({
 
 // 这种实现方式比较粗暴 不好 Bearer token 需要学习
 http.interceptors.request.use(function (config) {
-  config.headers.Authorization = 'Bearer ' + localStorage.token
+  if (localStorage.token) {
+    config.headers.Authorization = 'Bearer ' + localStorage.token
+  }
   return config
 }, err => {
   return Promise.reject(err)
@@ -19,6 +22,7 @@ http.interceptors.request.use(function (config) {
 http.interceptors.response.use(res => {
   return res
 }, err => {
+  console.log('error', err.response)
   if (err.response.data.message) {
     // 此处调用了 elementui 的方法，
     // 因为vue add elementui时全局使用了
@@ -26,6 +30,11 @@ http.interceptors.response.use(res => {
       type: 'error',
       message: err.response.data.message
     })
+  }
+
+  // 可以约定一个状态码 或者 只要错误就跳回login页面
+  if (err.response.status === 401) {
+    router.push('/login')
   }
 
   return Promise.reject(err)
