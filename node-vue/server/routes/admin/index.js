@@ -1,4 +1,5 @@
 module.exports = app => {
+	const jwt = require('jsonwebtoken')
 	const express = require( "express" );
 	const router = express.Router(
 		{
@@ -12,8 +13,22 @@ module.exports = app => {
 		res.send( model );
 	} );
 
-	// 查询
-	router.get( "", async ( req, res ) => {
+	// 查询列表 添加token校验 通过添加中间件实现
+	// 参考文档：https://juejin.im/post/5bab739af265da0aa3593177
+	router.get( "", async (req, res, next) => {
+		// || 空字符串 是一种保护措施
+		// 注意authorization小写 前端都大写 后端都小写
+		const token = String(req.headers.authorization || '').split(' ').pop()
+		console.log('token: ', token)
+		// id<->token
+		const { id } = jwt.verify(token, app.get('secret'))
+		// const user = require(user).findById(id)
+		// 此处将user挂在到req上去 之后才可以继续访问
+		const AdminUser = require('../../models/AdminUser')
+		req.user = await AdminUser.findById(id)
+		console.log('user:', req.user)
+		await next()
+	} , async ( req, res ) => {
 		const queryOptions = {};
 		if ( req.Model.modelName === "Category" ) {
 			// === vs ==
@@ -44,6 +59,7 @@ module.exports = app => {
 		} );
 	} );
 
+	// 中间件
 	app.use( "/admin/api/rest/:resource", async ( req, res, next ) => {
 		const modelName = require( "inflection" ).classify( req.params.resource );
 		req.Model = require( `../../models/${modelName}` );

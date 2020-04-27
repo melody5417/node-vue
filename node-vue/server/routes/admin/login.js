@@ -30,6 +30,7 @@ module.exports = app => {
         // 常用 web token 验证库： jsonwebtoken
         const jwt = require('jsonwebtoken')
         // 此处 app.get 和 路由里的app.get冲突了，就靠参数的个数决定
+        // app.get获取全局变量
         const token = jwt.sign({ id: user._id }, app.get('secret'))
         res.send({token})
     })

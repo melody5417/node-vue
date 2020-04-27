@@ -5,6 +5,14 @@ const http = axios.create({
   baseURL: 'http://localhost:3000/admin/api'
 })
 
+// 这种实现方式比较粗暴 不好 Bearer token 需要学习
+http.interceptors.request.use(function (config) {
+  config.headers.Authorization = 'Bearer ' + localStorage.token
+  return config
+}, err => {
+  return Promise.reject(err)
+})
+
 // 前端通用错误处理
 // http的错误一般是全局处理的
 // 给http的response加一个拦截器
