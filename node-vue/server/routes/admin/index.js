@@ -1,6 +1,5 @@
 module.exports = app => {
-	const jwt = require('jsonwebtoken')
-	const assert = require('http-assert')
+
 	const express = require( "express" );
 	const router = express.Router(
 		{
@@ -14,26 +13,12 @@ module.exports = app => {
 		res.send( model );
 	} );
 
+	// 提取中间件
+	const authMiddleware = require('./../../middleware/auth')
+
 	// 查询列表 添加token校验 通过添加中间件实现
 	// 参考文档：https://juejin.im/post/5bab739af265da0aa3593177
-	router.get( "", async (req, res, next) => {
-		// || 空字符串 是一种保护措施
-		// 注意authorization小写 前端都大写 后端都小写
-		const token = String(req.headers.authorization || '').split(' ').pop()
-		assert(token, 401, '请先登录')
-
-		// id<->token
-		const { id } = jwt.verify(token, app.get('secret'))
-		assert(id, 401, '请先登录')
-
-		// const user = require(user).findById(id)
-		// 此处将user挂在到req上去 之后才可以继续访问
-		const AdminUser = require('../../models/AdminUser')
-		req.user = await AdminUser.findById(id)
-		assert(req.user, 401, '请先登录')
-
-		await next()
-	} , async ( req, res ) => {
+	router.get( "", authMiddleware(), async ( req, res ) => {
 		const queryOptions = {};
 		if ( req.Model.modelName === "Category" ) {
 			// === vs ==
@@ -44,20 +29,20 @@ module.exports = app => {
 	} );
 
 	// 根据 id 查询
-	router.get( "/:id", async ( req, res ) => {
+	router.get( "/:id", authMiddleware(), async ( req, res ) => {
 		const items = await req.Model.findById( req.params.id );
 		res.send( items );
 	} );
 
 	// 更新
-	router.put( "/:id", async ( req, res ) => {
+	router.put( "/:id", authMiddleware(), async ( req, res ) => {
 		console.log( "update ", req );
 		const model = await req.Model.findByIdAndUpdate( req.params.id, req.body );
 		res.send( model );
 	} );
 
 	// 删除
-	router.delete( "/:id", async ( req, res ) => {
+	router.delete( "/:id", authMiddleware(), async ( req, res ) => {
 		await req.Model.findByIdAndDelete( req.params.id, req.body );
 		res.send( {
 			success: true

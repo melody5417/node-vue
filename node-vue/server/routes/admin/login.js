@@ -4,6 +4,7 @@ module.exports = app => {
     app.post('/admin/api/login', async (req, res) => {
         // 解构赋值，简化步骤
         const { username, password} = req.body
+        console.log('username: password:', username, password)
 
         // 1. 根据用户名找用户
 
@@ -13,7 +14,7 @@ module.exports = app => {
         const user = await AdminUser.findOne({
             username: username  // 简写方式 username
         }).select('+password')
-
+        console.log('user:', user)
 
         // if (!user) {
         //     // 设定状态码
@@ -25,6 +26,7 @@ module.exports = app => {
         // 这里要判断是否有user 然后又要报错，反复报错 这里有依赖可以优化
 		// http-assert
         assert(user, 422, '用户不存在')
+        console.log('user', user)
 
         // 2. 校验密码
         const isValid = require('bcrypt').compareSync(password, user.password)
