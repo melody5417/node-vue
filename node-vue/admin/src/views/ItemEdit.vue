@@ -10,7 +10,8 @@
                 <!--$http.defaults 表示 http 的默认参数-->
                 <el-upload
                         class="avatar-uploader"
-                        :action="$http.defaults.baseURL + '/upload'"
+                        :action="uploadUrl"
+                        :headers="getAuthHeaders()"
                         :show-file-list="false"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload">

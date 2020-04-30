@@ -13,6 +13,25 @@ Vue.config.productionTip = false
 // https://cn.vuejs.org/v2/cookbook/adding-instance-properties.html
 Vue.prototype.$http = http
 
+// 上传图片没有走axios token没有添加上
+// 所以在这里全局混入代码块 在每个实例里都可以调用了
+// 应用案例见 ItemEdit.vue
+Vue.mixin({
+  computed: {
+    uploadUrl () {
+      return $http.defaults.baseURL + '/upload'
+    }
+  },
+  methods: {
+    // 用method比data好 可以实时取值
+    getAuthHeaders () {
+      return {
+        Authorization: `Bearer ${localStorage.token || ''}`
+      }
+    }
+  }
+})
+
 new Vue({
   router,
   render: h => h(App)
