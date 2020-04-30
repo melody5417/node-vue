@@ -1,19 +1,19 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Main from '../views/Main'
-import CategoryEdit from '../views/CategoryEdit'
-import CategoryList from '../views/CategoryList'
-import ItemEdit from '../views/ItemEdit'
-import ItemList from '../views/ItemList'
-import HeroEdit from '../views/HeroEdit'
-import HeroList from '../views/HeroList'
-import ArticleEdit from '../views/ArticleEdit'
-import ArticleList from '../views/ArticleList'
 import AdEdit from '../views/AdEdit'
 import AdList from '../views/AdList'
 import AdminUserEdit from '../views/AdminUserEdit'
 import AdminUserList from '../views/AdminUserList'
+import ArticleEdit from '../views/ArticleEdit'
+import ArticleList from '../views/ArticleList'
+import CategoryEdit from '../views/CategoryEdit'
+import CategoryList from '../views/CategoryList'
+import HeroEdit from '../views/HeroEdit'
+import HeroList from '../views/HeroList'
+import ItemEdit from '../views/ItemEdit'
+import ItemList from '../views/ItemList'
 import Login from '../views/Login'
+import Main from '../views/Main'
 
 Vue.use(VueRouter)
 
@@ -21,7 +21,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: { isPublic: true } // 路由元信息
   },
   {
     path: '/',
@@ -102,6 +103,17 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+// 服务端只能对接口限制
+// 客户端对路由进行限制 导航守卫
+// 注册一个全局前置守卫
+router.beforeEach((to, from, next) => {
+  if (!to.meta.isPublic && !localStorage.token) {
+    return next('/login')
+  }
+
+  next()
 })
 
 export default router
