@@ -1,0 +1,22 @@
+// reset
+
+* {
+    box-sizing: border-box;
+    outline: none;
+}
+
+html {
+    font-size: 13px;    // 作为基础字体大小
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;  // Arial所有电脑上都有， Hel苹果电脑专用，sans非衬线字体。优先级从高到低
+    line-height: 1.2em;
+    background-color: #f1f1f1;
+}
+
+a {
+    color: #999;
+}
+
