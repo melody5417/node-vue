@@ -1,5 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+// 引用css文件都是在js中
+// $  npm i -D sass sass-loader
+// css->scss好处：写嵌套更方便
+import './assets/style.scss'
+
+
 
 Vue.config.productionTip = false
 
