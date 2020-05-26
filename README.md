@@ -9,6 +9,7 @@
 
 * server
 	服务端 nodejs实现
+	
 	启动：
 	
 	```
@@ -25,6 +26,7 @@
 * admin
 	
 	web cms端 vue实现
+	
 	启动：
 	
 	```
@@ -37,5 +39,16 @@
 
 * web
 	
-	移动端 vue实现 还未开始
+	移动端 vue实现 
+	
+	启动：
+	
+	```
+	// 安装依赖
+	$ npm install
+	
+	// 启动
+	$ npm run serve
+	```
+
 
