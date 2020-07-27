@@ -3,9 +3,9 @@
 
 文佳结构
 
-* data
+* db
 
-	数据库 mongodb实现
+	数据库 mongodb 实现
 
 * server
 	服务端 nodejs实现
@@ -17,15 +17,15 @@
 	$ npm install
 	
 	// 需要先启动 mongodb
-	$ mongod --dbpath data/
+	$ mongod --dbpath db/
 		
-	//	启动server
+	// 启动server
 	$ npm run serve
 	```
 		
 * admin
 	
-	web cms端 vue实现
+	web cms 端 vue实现
 	
 	启动：
 	
@@ -39,7 +39,7 @@
 
 * web
 	
-	移动端 vue实现 
+	移动端 vue 实现 
 	
 	启动：
 	
