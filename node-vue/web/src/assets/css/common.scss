@@ -1,7 +1,11 @@
+// 工具类 sass
+// $ npm i -D sass sass-loader
+// 写嵌套更方便
+
 // colors 从浅到深 常用颜色
 
 $colors: (
-    primary: #db93ef,
+    "primary": #db93ef,
     "white": #fff,
     "light": #f9f9f9,
     "grey": #999,
@@ -16,7 +20,7 @@ $colors: (
         color: $color 
     }
     .bg-#{$colorKey} {
-        color: $color;
+        background-color: $color;
     }
 }
 
@@ -44,4 +48,43 @@ $font-sizes: (
         font-size: $size * $base-font-size;
     }
 }
+
+// 命名参考 bootstrap
+// flex
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+// 主轴
+$flex-jc: (
+    start: flex-start,
+    end: flex-start,
+    center: center,
+    between: space-between,
+    around: space-around,
+);
+@each $key, $value in $flex-jc {
+  .jc-#{$key} {
+      justify-content: $value;
+  }  
+}
+
+// 交叉轴
+$flex-ai: (
+    start: flex-start,
+    end: flex-start,
+    center: center,
+    stretch: stretch,
+);
+@each $key, $value in $flex-ai {
+  .ai-#{$key} {
+      align-items: $value;
+  }  
+}
+
 
