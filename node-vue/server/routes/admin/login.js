@@ -7,8 +7,18 @@ module.exports = app => {
         console.log('username: password:', username, password)
 
         // 1. 根据用户名找用户
-
         const AdminUser = require('../../models/AdminUser')
+
+        // // 插入默认用户
+        // const defaultUser = await AdminUser.create( {
+        //     username: 'admin',
+        //     password: 'password'
+        // } )
+        // console.log('defaultUser:', defaultUser)
+        
+        // const users = await AdminUser.find()
+        // console.log('users:', users)
+
         // 此处 + 强制选择， 因为model里设置了默认排除
         // 前缀 - 强制排除， 前缀 + 强制选择
         const user = await AdminUser.findOne({

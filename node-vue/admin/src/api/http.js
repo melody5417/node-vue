@@ -3,7 +3,10 @@ import Vue from 'vue'
 import router from '../router/router'
 
 const http = axios.create({
-  baseURL: 'http://localhost:3000/admin/api'
+  // baseURL: 'http://localhost:3000/admin/api'
+  // 兼容生产和开发环境 这里需要添加环境变量文件 .env.development
+  // 默认用/admin/api 和跟路径一致
+  baseURL: process.env.VUE_APP_API_URL || '/admin/api'
 })
 
 // 这种实现方式比较粗暴 不好 Bearer token 需要学习

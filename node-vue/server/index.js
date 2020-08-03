@@ -11,6 +11,7 @@ app.use(express.json())
 
 // 静态托管 让我们uploads里的文件可以通过/uploads访问
 app.use('/uploads', express.static(__dirname + '/uploads'))
+app.use('/admin', express.static(__dirname + '/public/admin'))
 
 // 路由
 require('./routes/admin/category')(app) // app传参 针对category 和模型耦合
